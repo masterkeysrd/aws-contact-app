@@ -1,14 +1,18 @@
 import json
+import boto3
+
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('Contact')
 
 def lambda_handler(event, _):
     return handle_rest(event, handle_get, handle_post)
 
-def handle_rest(event, get, post):
+def handle_rest(event, get_fun, post_fun):
     if event.get("httpMethod") is not None:
         if event.get("httpMethod") == "GET":
-            return handle_get()
+            return get_fun()
         elif event.get("httpMethod") == "POST":
-            return handle_post(event.get("body"))
+            return post_fun(event.get("body"))
 
 def handle_get():
     contacts = [
@@ -30,6 +34,9 @@ def handle_get():
 
 
 def handle_post(data):
+    table.put_item(
+        Item=json.loads(data)
+    )
     return {
         'statusCode': 201,
         'body': json.dumps(data)
