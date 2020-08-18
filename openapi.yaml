@@ -1,0 +1,66 @@
+openapi: 3.0.0
+info:
+  title: "API"
+  version: "1.0.0"
+paths: 
+  /contacts:
+    get:
+      tags:
+        - Contacts
+      summary: "Return a list of contacts."
+      description: "Return a list of contacts."
+      responses:
+        '200':
+          description: "A list of contacts."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Contact"
+    post:
+      tags:
+        - Contacts
+      operationId: "addContact"
+      summary: "Add new contact"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Contact"
+      responses: 
+        '201':
+          description: "Created contact"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Contact"
+      deprecated: false
+components:
+  schemas:
+    Contact:
+      type: object
+      required:
+      - name
+      - phone
+      - email
+      properties:
+        name:
+          type: string
+          description: "Contact Name"
+          example: "John Doe"
+        phone:
+          type: string
+          description: "Contact Phone Number"
+          example: "(xxx) xxxx-xxxx"
+        email:
+          type: string
+          description: "Contact Email Address"
+          example: "johndoe@contoso.com"
+        address:
+          type: string
+          description: "Contact Physical Address"
+          example: "124, Dreams Street, Wonderland, Pluto"
